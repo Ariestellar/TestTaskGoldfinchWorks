@@ -1,0 +1,12 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes: []
+  m_configObjects:
+    com.htc.upm.wave.xrsdk.xrsettings: {fileID: 11400000, guid: afbd022c253d00c42976dc0b2dd1c008,
+      type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 1925579e75dce934da2f4e7d8eed98f1,
+      type: 2}
