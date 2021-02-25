@@ -11,9 +11,7 @@ public class RotateGrabbable : BasicGrabbable
         , IColliderEventDragEndHandler
 {
 
-    [SerializeField] [HideInInspector] private ColliderButtonEventData.InputButton _grabButton = ColliderButtonEventData.InputButton.Trigger;
-    [FlagsFromEnum(typeof(ColliderButtonEventData.InputButton))] private uint _secondaryGrabButton = 1u << (int)ColliderButtonEventData.InputButton.Trigger;
-    [FlagsFromEnum(typeof(ControllerButton))] private ulong _primaryGrabButton = 0ul;
+    [SerializeField] [HideInInspector] private ColliderButtonEventData.InputButton _grabButton = ColliderButtonEventData.InputButton.Trigger;    
     [SerializeField] private bool _allowMultipleGrabbers = true;
     private bool _moveByVelocity { get { return !unblockableGrab && grabRigidbody != null && !grabRigidbody.isKinematic; } }
     private IndexedTable<ColliderButtonEventData, Grabber> _eventGrabberSet;
@@ -43,12 +41,6 @@ public class RotateGrabbable : BasicGrabbable
         ClearSecondaryGrabButton();
         SetSecondaryGrabButton(_grabButton, true);
         _grabButton = ColliderButtonEventData.InputButton.Trigger;
-    }
-
-    protected override void OnDisable()
-    {
-        ClearGrabbers(true);
-        ClearEventGrabberSet();
     }
 
     private void ClearEventGrabberSet()
@@ -86,7 +78,7 @@ public class RotateGrabbable : BasicGrabbable
         _grabStart = currentGrabber.GrabberOrigin;
     }
 
-    public override void OnColliderEventDragFixedUpdate(ColliderButtonEventData eventData)
+    public override void OnColliderEventDragUpdate(ColliderButtonEventData eventData)
     {
         _currentAngleRotation = GetCurrenAngleRotation(_grabStart.pos, currentGrabber.GrabberOrigin.pos, grabRigidbody.transform.position);
 
@@ -110,10 +102,7 @@ public class RotateGrabbable : BasicGrabbable
         {
             transform.rotation = GetNewRotationPositionInTheRange(-45, 45);
         }
-    }
 
-    public override void OnColliderEventDragUpdate(ColliderButtonEventData eventData)
-    {
         if (isGrabbed && !_moveByVelocity && currentGrabber.eventData == eventData)
         {
             RecordLatestPosesForDrop(Time.time, 0.05f);
