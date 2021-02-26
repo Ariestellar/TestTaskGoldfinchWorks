@@ -28,11 +28,7 @@ public class RotateGrabbable : BasicGrabbable
         base.Awake();
 
         RestoreObsoleteGrabButton();
-        _startingPositionRotationValve = transform.rotation;
-
-        afterGrabberGrabbed += () => afterGrabbed.Invoke(this);
-        beforeGrabberReleased += () => beforeRelease.Invoke(this);
-        onGrabberDrop += () => onDrop.Invoke(this);
+        _startingPositionRotationValve = transform.localRotation;
     }
 
     private void RestoreObsoleteGrabButton()
@@ -84,23 +80,23 @@ public class RotateGrabbable : BasicGrabbable
 
         if (_totalSwingAngle <= 0)
         {
-            transform.rotation = GetNewRotationPositionInTheRange(0, 90);
+            transform.localRotation = GetNewRotationPositionInTheRange(0, 90);
         }
         else if (_totalSwingAngle <= 45 && _totalSwingAngle > 0)
         {
-            transform.rotation = GetNewRotationPositionInTheRange(-_totalSwingAngle, 90 - _totalSwingAngle);
+            transform.localRotation = GetNewRotationPositionInTheRange(-_totalSwingAngle, 90 - _totalSwingAngle);
         }
         else if (_totalSwingAngle > MaximumTurn - 90)
         {
-            transform.rotation = GetNewRotationPositionInTheRange((MaximumTurn - _totalSwingAngle) - 90, MaximumTurn - _totalSwingAngle);
+            transform.localRotation = GetNewRotationPositionInTheRange((MaximumTurn - _totalSwingAngle) - 90, MaximumTurn - _totalSwingAngle);
         }
         else if (_totalSwingAngle >= MaximumTurn)
         {
-            transform.rotation = GetNewRotationPositionInTheRange(-90, 0);
+            transform.localRotation = GetNewRotationPositionInTheRange(-90, 0);
         }
         else
         {
-            transform.rotation = GetNewRotationPositionInTheRange(-45, 45);
+            transform.localRotation = GetNewRotationPositionInTheRange(-45, 45);
         }
 
         if (isGrabbed && !_moveByVelocity && currentGrabber.eventData == eventData)
@@ -126,7 +122,7 @@ public class RotateGrabbable : BasicGrabbable
             _totalSwingAngle += _currentAngleRotation;
         }
 
-        _startingPositionRotationValve = transform.rotation;
+        _startingPositionRotationValve = transform.localRotation;
 
         float currentProgressTurn = _totalSwingAngle * 100 / MaximumTurn;
         UpdateProgressTurn?.Invoke(currentProgressTurn);
